@@ -1,0 +1,214 @@
+@import "tailwindcss";
+
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    background: #ffffff;
+    color: #111827;
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   TEXT SELECTION
+========================================================= */
+
+::selection {
+    background: #ddd6fe;
+    color: #4c1d95;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f9fafb;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c4b5fd;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #8b5cf6;
+}
+
+
+/* =========================================================
+   GLOBAL SECTION
+========================================================= */
+
+section {
+    scroll-margin-top: 80px;
+}
+
+
+/* =========================================================
+   INPUT FOCUS
+========================================================= */
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+}
+
+
+/* =========================================================
+   CONTACT FORM
+========================================================= */
+
+#contact input,
+#contact textarea {
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+#contact input::placeholder,
+#contact textarea::placeholder {
+    color: #4b5563;
+}
+
+#contact input:focus,
+#contact textarea:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+
+/* =========================================================
+   CONTACT BUTTON
+========================================================= */
+
+#contact button[type="submit"] {
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#contact button[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 25px rgba(124, 58, 237, 0.25);
+}
+
+#contact button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   PROJECT IMAGES
+========================================================= */
+
+#projects img {
+    transition: transform 0.5s ease;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    section {
+        scroll-margin-top: 70px;
+    }
+
+}
+
+
+@media (max-width: 640px) {
+
+    section {
+        scroll-margin-top: 64px;
+    }
+
+    #contact input,
+    #contact textarea {
+        font-size: 16px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+}
