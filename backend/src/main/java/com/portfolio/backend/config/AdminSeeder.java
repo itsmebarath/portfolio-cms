@@ -17,22 +17,21 @@ public class AdminSeeder {
 
         return args -> {
 
-            if (userRepository.findByEmail("admin@example.com").isEmpty()) {
+            User admin = userRepository
+                    .findByEmail("admin@example.com")
+                    .orElseGet(User::new);
 
-                User admin = new User();
+            admin.setEmail("admin@example.com");
 
-                admin.setEmail("admin@example.com");
+            admin.setPassword(
+                    passwordEncoder.encode("Admin@123")
+            );
 
-                admin.setPassword(
-                        passwordEncoder.encode("Admin@123")
-                );
+            admin.setRole("ADMIN");
 
-                admin.setRole("ADMIN");
+            userRepository.save(admin);
 
-                userRepository.save(admin);
-
-                System.out.println("Admin user created successfully!");
-            }
+            System.out.println("Admin user created/updated successfully!");
         };
     }
 }
