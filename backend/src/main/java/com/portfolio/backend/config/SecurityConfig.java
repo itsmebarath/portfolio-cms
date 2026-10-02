@@ -18,160 +18,146 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(
-            JwtAuthenticationFilter jwtAuthenticationFilter) {
+        public SecurityConfig(
+                        JwtAuthenticationFilter jwtAuthenticationFilter) {
 
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
-
-    // =========================
-    // Password Encoder
-    // =========================
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-
-        return new BCryptPasswordEncoder();
-    }
-
-    // =========================
-    // CORS Configuration
-    // =========================
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-
-        CorsConfiguration configuration =
-                new CorsConfiguration();
-
-        configuration.setAllowedOrigins(
-                List.of(
-                        "http://localhost:5173",
-                        "http://localhost:5174",
-                        "https://portfolio-frontend-prsd.onrender.com"
-                )
-        );
-
-        configuration.setAllowedMethods(
-                List.of(
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "DELETE",
-                        "OPTIONS"
-                )
-        );
-
-        configuration.setAllowedHeaders(
-                List.of("*")
-        );
-
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration(
-                "/**",
-                configuration
-        );
-
-        return source;
-    }
-
-    // =========================
-    // Security Filter Chain
-    // =========================
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http) throws Exception {
-
-        // Disable CSRF because we are using JWT
-        http.csrf(
-                csrf -> csrf.disable()
-        );
-
-        // Enable CORS
-        http.cors(
-                cors -> cors.configurationSource(
-                        corsConfigurationSource()
-                )
-        );
+                this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        }
 
         // =========================
-        // Authorization Rules
+        // Password Encoder
         // =========================
 
-        http.authorizeHttpRequests(
-                auth -> auth
+        @Bean
+        public PasswordEncoder passwordEncoder() {
 
-                        // -------------------------
-                        // Public Login
-                        // -------------------------
-
-                        .requestMatchers(
-                                "/auth/login",
-                                "/error"
-                        ).permitAll()
-
-                        // -------------------------
-                        // Public GET APIs
-                        // -------------------------
-
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/about/**",
-                                "/skills/**",
-                                "/projects/**",
-                                "/blogs/**",
-                                "/experiences/**",
-                                "/testimonials/**",
-                                "/services/**"
-                        ).permitAll()
-
-                        // -------------------------
-                        // Public Contact Form
-                        // -------------------------
-                        // Anyone can submit
-                        // a contact message.
-
-                        .requestMatchers(
-                                HttpMethod.POST,
-                                "/contact",
-                                "/contacts"
-                        ).permitAll()
-
-                        // -------------------------
-                        // Everything Else
-                        // -------------------------
-                        // Admin requests require
-                        // JWT authentication.
-
-                        .anyRequest().authenticated()
-        );
-
-        // Disable default login page
-        http.formLogin(
-                form -> form.disable()
-        );
-
-        // Disable HTTP Basic authentication
-        http.httpBasic(
-                basic -> basic.disable()
-        );
+                return new BCryptPasswordEncoder();
+        }
 
         // =========================
-        // JWT Authentication Filter
+        // CORS Configuration
         // =========================
 
-        http.addFilterBefore(
-                jwtAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class
-        );
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
 
-        return http.build();
-    }
+                CorsConfiguration configuration = new CorsConfiguration();
+
+                configuration.setAllowedOrigins(
+                                List.of(
+                                                "http://localhost:5173",
+                                                "http://localhost:5174",
+                                                "https://portfolio-frontend-prsd.onrender.com",
+                                                "https://portfolio-admin-fr9o.onrender.com"));
+
+                configuration.setAllowedMethods(
+                                List.of(
+                                                "GET",
+                                                "POST",
+                                                "PUT",
+                                                "DELETE",
+                                                "OPTIONS"));
+
+                configuration.setAllowedHeaders(
+                                List.of("*"));
+
+                configuration.setAllowCredentials(true);
+
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+                source.registerCorsConfiguration(
+                                "/**",
+                                configuration);
+
+                return source;
+        }
+
+        // =========================
+        // Security Filter Chain
+        // =========================
+
+        @Bean
+        public SecurityFilterChain securityFilterChain(
+                        HttpSecurity http) throws Exception {
+
+                // Disable CSRF because we are using JWT
+                http.csrf(
+                                csrf -> csrf.disable());
+
+                // Enable CORS
+                http.cors(
+                                cors -> cors.configurationSource(
+                                                corsConfigurationSource()));
+
+                // =========================
+                // Authorization Rules
+                // =========================
+
+                http.authorizeHttpRequests(
+                                auth -> auth
+
+                                                // -------------------------
+                                                // Public Login
+                                                // -------------------------
+
+                                                .requestMatchers(
+                                                                "/auth/login",
+                                                                "/error")
+                                                .permitAll()
+
+                                                // -------------------------
+                                                // Public GET APIs
+                                                // -------------------------
+
+                                                .requestMatchers(
+                                                                HttpMethod.GET,
+                                                                "/about/**",
+                                                                "/skills/**",
+                                                                "/projects/**",
+                                                                "/blogs/**",
+                                                                "/experiences/**",
+                                                                "/testimonials/**",
+                                                                "/services/**")
+                                                .permitAll()
+
+                                                // -------------------------
+                                                // Public Contact Form
+                                                // -------------------------
+                                                // Anyone can submit
+                                                // a contact message.
+
+                                                .requestMatchers(
+                                                                HttpMethod.POST,
+                                                                "/contact",
+                                                                "/contacts")
+                                                .permitAll()
+
+                                                // -------------------------
+                                                // Everything Else
+                                                // -------------------------
+                                                // Admin requests require
+                                                // JWT authentication.
+
+                                                .anyRequest().authenticated());
+
+                // Disable default login page
+                http.formLogin(
+                                form -> form.disable());
+
+                // Disable HTTP Basic authentication
+                http.httpBasic(
+                                basic -> basic.disable());
+
+                // =========================
+                // JWT Authentication Filter
+                // =========================
+
+                http.addFilterBefore(
+                                jwtAuthenticationFilter,
+                                UsernamePasswordAuthenticationFilter.class);
+
+                return http.build();
+        }
 }
