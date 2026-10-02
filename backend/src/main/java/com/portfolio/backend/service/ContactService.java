@@ -12,13 +12,19 @@ import java.util.List;
 public class ContactService {
 
     private final ContactRepository contactRepository;
+    private final EmailService emailService;
 
-    public ContactService(ContactRepository contactRepository) {
+    public ContactService(
+            ContactRepository contactRepository,
+            EmailService emailService) {
+
         this.contactRepository = contactRepository;
+        this.emailService = emailService;
     }
 
     public Contact createContact(ContactRequest request) {
 
+        // Create contact object
         Contact contact = new Contact();
 
         contact.setName(request.getName());
@@ -27,7 +33,31 @@ public class ContactService {
         contact.setMessage(request.getMessage());
         contact.setRead(false);
 
-        return contactRepository.save(contact);
+        // Save message to database
+        Contact savedContact = contactRepository.save(contact);
+
+        // Try to send email notification
+        try {
+
+            emailService.sendContactEmail(
+                    request.getName(),
+                    request.getEmail(),
+                    request.getSubject(),
+                    request.getMessage()
+            );
+
+            System.out.println("Contact email sent successfully.");
+
+        } catch (Exception e) {
+
+            // Email failure should NOT break the contact form
+            System.err.println(
+                    "Failed to send contact email: "
+                            + e.getMessage()
+            );
+        }
+
+        return savedContact;
     }
 
     public List<Contact> getAllContacts() {
@@ -35,6 +65,7 @@ public class ContactService {
     }
 
     public Contact getContactById(Long id) {
+
         return contactRepository.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Contact message not found"));

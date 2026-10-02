@@ -1,16 +1,24 @@
 package com.portfolio.backend.service;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+
+import java.util.Map;
 
 @Service
 public class EmailService {
 
-    private final JavaMailSender mailSender;
+    private final RestClient restClient;
 
-    public EmailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
+    @Value("${resend.api-key}")
+    private String apiKey;
+
+    public EmailService() {
+        this.restClient = RestClient.builder()
+                .baseUrl("https://api.resend.com")
+                .build();
     }
 
     public void sendContactEmail(
@@ -19,23 +27,28 @@ public class EmailService {
             String subject,
             String message) {
 
-        SimpleMailMessage mail = new SimpleMailMessage();
+        String emailBody =
+                "<h2>New Portfolio Contact</h2>" +
+                "<p><strong>Name:</strong> " + name + "</p>" +
+                "<p><strong>Email:</strong> " + email + "</p>" +
+                "<p><strong>Subject:</strong> " + subject + "</p>" +
+                "<hr>" +
+                "<p><strong>Message:</strong></p>" +
+                "<p>" + message.replace("\n", "<br>") + "</p>";
 
-        mail.setTo("barathrajas093@gmail.com");
-
-        mail.setSubject(
-                "New Portfolio Contact: " + subject
+        Map<String, Object> requestBody = Map.of(
+                "from", "onboarding@resend.dev",
+                "to", new String[]{"barathrajas093@gmail.com"},
+                "subject", "New Portfolio Contact: " + subject,
+                "html", emailBody
         );
 
-        mail.setText(
-                "You received a new message from your portfolio.\n\n"
-                + "Name: " + name + "\n"
-                + "Email: " + email + "\n"
-                + "Subject: " + subject + "\n\n"
-                + "Message:\n"
-                + message
-        );
-
-        mailSender.send(mail);
+        restClient.post()
+                .uri("/emails")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + apiKey)
+                .body(requestBody)
+                .retrieve()
+                .toBodilessEntity();
     }
 }
