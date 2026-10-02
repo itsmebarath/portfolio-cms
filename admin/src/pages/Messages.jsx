@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import AdminLayout from "../components/AdminLayout";
 import api from "../services/api";
@@ -15,7 +16,7 @@ function Messages() {
 
         try {
 
-            const response = await api.get("/contact");
+            const response = await api.get("/contacts");
 
             setMessages(response.data);
 
@@ -37,7 +38,7 @@ function Messages() {
 
         try {
 
-            await api.put(`/contact/${id}/read`);
+            await api.put(`/contacts/${id}/read`);
 
             await fetchMessages();
 
@@ -61,7 +62,7 @@ function Messages() {
 
         try {
 
-            await api.delete(`/contact/${id}`);
+            await api.delete(`/contacts/${id}`);
 
             await fetchMessages();
 
@@ -102,7 +103,6 @@ function Messages() {
                 </div>
 
             </div>
-
 
             {loading ? (
 
@@ -172,7 +172,6 @@ function Messages() {
 
                                 </div>
 
-
                                 {!message.read && (
 
                                     <span className="unread-badge">
@@ -182,7 +181,6 @@ function Messages() {
                                 )}
 
                             </div>
-
 
                             <div className="message-body">
 
@@ -200,7 +198,6 @@ function Messages() {
 
                             </div>
 
-
                             <div className="message-footer">
 
                                 <span>
@@ -210,7 +207,6 @@ function Messages() {
                                         ).toLocaleString()
                                         : ""}
                                 </span>
-
 
                                 <div className="message-actions">
 
@@ -256,3 +252,4 @@ function Messages() {
 }
 
 export default Messages;
+
