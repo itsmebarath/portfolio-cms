@@ -17,6 +17,7 @@ function Messages() {
         try {
 
             const response = await api.get("/contacts");
+            console.log("MESSAGES FROM API:", response.data);
 
             setMessages(response.data);
 
