@@ -17,7 +17,7 @@ function Messages() {
         try {
 
             const response = await api.get("/contacts");
-            console.log("MESSAGES FROM API:", response.data);
+
 
             setMessages(response.data);
 
@@ -138,11 +138,10 @@ function Messages() {
 
                         <article
                             key={message.id}
-                            className={`message-card ${
-                                message.read
+                            className={`message-card ${message.read
                                     ? "message-read"
                                     : "message-unread"
-                            }`}
+                                }`}
                         >
 
                             <div className="message-card-top">
