@@ -848,6 +848,25 @@ function Home() {
                                 >
                                     Get in touch
                                 </a>
+
+                                {/* NEW: View Resume */}
+                                <a
+                                    href="/resume/Barath_Raj_Resume.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`rounded-full border border-[#22D3EE]/40 bg-[#22D3EE]/10 px-8 py-3.5 text-sm font-bold text-[#22D3EE] backdrop-blur transition hover:border-[#22D3EE] hover:bg-[#22D3EE]/20 hover:scale-105 ${focus}`}
+                                >
+                                    View Resume
+                                </a>
+
+                                {/* NEW: Download Resume */}
+                                <a
+                                    href="/resume/Barath_Raj_Resume.pdf"
+                                    download="Barath_Raj_Resume.pdf"
+                                    className={`rounded-full border border-[#F472B6]/40 bg-[#F472B6]/10 px-8 py-3.5 text-sm font-bold text-[#F472B6] backdrop-blur transition hover:border-[#F472B6] hover:bg-[#F472B6]/20 hover:scale-105 ${focus}`}
+                                >
+                                    Download Resume
+                                </a>
                             </div>
                         </Reveal>
 
