@@ -1,0 +1,23 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Local configuration
+application-local.properties
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+
+# Java / Maven
+target/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
