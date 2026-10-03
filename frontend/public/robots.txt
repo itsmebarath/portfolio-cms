@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://portfolio-frontend-prsd.onrender.com/sitemap.xml
